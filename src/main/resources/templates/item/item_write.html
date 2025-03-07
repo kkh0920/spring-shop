@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/css/main.css" rel="stylesheet">
+    <link href="/css/nav.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+    <div th:replace="~{nav.html :: navbar}"></div>
+
+    <div>
+        <input id="title" type="text" placeholder="아이템 이름">
+        <input id="price" type="number" placeholder="가격">
+        <button onclick="add()">전송</button>
+    </div>
+
+</body>
+
+<script>
+    function add() {
+        const title = document.getElementById('title').value;
+        const price = document.getElementById('price').value;
+
+        axios.post('/item/add', {
+            title: title,
+            price: price
+        }, {
+            headers: { 'Content-Type': 'application/json' }
+        }).then(() => {
+            location.href = '/item';
+        }).catch((error) => {
+            alert("에러 코드 : " + error.response.status + "\n" +
+                  "에러 메시지 : " + error.response.data);
+        });
+    }
+</script>
+
+</html>

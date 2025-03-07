@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/css/main.css" rel="stylesheet">
+</head>
+<body>
+
+    <div th:each="notice : ${notices}">
+        <div>
+            <h4 th:text="${notice.getTitle()}">title</h4>
+            <p th:text="${notice.getDate()}">date</p>
+        </div>
+    </div>
+
+</body>
+</html>

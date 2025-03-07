@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/css/main.css" rel="stylesheet">
+    <link href="/css/nav.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+
+    <div th:replace="~{nav.html :: navbar}"></div>
+
+    <div th:each="item : ${items}" class="card">
+        <a th:href="@{'/item/detail/' + ${item.getId()}}">
+            <img src="https://placehold.co/300">
+        </a>
+        <div>
+            <h4 th:text="${item.getTitle()}">item</h4>
+            <p th:text="${item.getPrice() + '원'}">price</p>
+            <button th:onclick="|confirmDelete(${item.getId()})|">삭제</button>
+            <button th:onclick="|modify(${item.getId()})|">수정</button>
+        </div>
+    </div>
+
+</body>
+
+<script th:inline="javascript">
+    function confirmDelete(id) {
+        if(!confirm("정말 아이템을 삭제하시겠습니까?")) {
+            return;
+        }
+        axios.delete(`/item/delete/${id}`)
+            .then(() => {
+                alert("아이템이 삭제되었습니다.");
+            })
+            .catch((error) => {
+                alert("에러 코드 : " + error.response.status + "\n" +
+                      "에러 메시지 : " + error.response.data.message);
+            }).finally(() => {
+                location.reload();
+            });
+    }
+
+    function modify(itemId) {
+        let form = document.createElement("form");
+        form.method = "GET";
+        form.action = '/item/modify/' + itemId;
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+
+</html>

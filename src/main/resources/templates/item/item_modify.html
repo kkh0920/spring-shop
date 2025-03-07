@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/css/main.css" rel="stylesheet">
+    <link href="/css/nav.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div>
+      <input id="title" type="text" placeholder="아이템 이름" th:value="${item.getTitle()}">
+      <input id="price" type="number" placeholder="가격" th:value="${item.getPrice()}">
+      <button th:onclick="|modify(${item.getId()})|">수정 완료</button>
+    </div>
+</body>
+
+<script>
+    function modify(id) {
+        const title = document.getElementById('title').value;
+        const price = document.getElementById('price').value;
+        axios.put('/item/modify', {
+            id: id,
+            title: title,
+            price: price
+        }, {
+            // put 요청 시, 일부 브라우저에서는 application/x-www-form-urlencoded로 요청을 보내기 때문에,
+            // RequestBody에 JSON 형태로 데이터를 보내기 위해 'application/json'로 설정해준다.
+            headers: { 'Content-Type': 'application/json' }
+        }).then(() => {
+            location.href = '/item';
+        }).catch((error) => {
+            alert("에러 코드 : " + error.response.status + "\n" +
+                  "에러 메시지 : " + error.response.data);
+        })
+    }
+</script>
+
+</html>
