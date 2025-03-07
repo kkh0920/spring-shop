@@ -7,14 +7,11 @@ import com.practice.shop.dto.item.ItemModifyRequestDto;
 import com.practice.shop.exception.item.ItemNotFoundException;
 import com.practice.shop.exception.item.ItemPriceInvalidException;
 import com.practice.shop.exception.item.ItemTitleBlankException;
-import com.practice.shop.exception.member.UserNotAuthenticatedException;
 import com.practice.shop.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.authentication.configuration.GlobalAuthenticationConfigurerAdapter;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 

@@ -1,7 +1,5 @@
 package com.practice.shop.domain;
 
-import com.practice.shop.exception.item.ItemPriceInvalidException;
-import com.practice.shop.exception.item.ItemTitleBlankException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

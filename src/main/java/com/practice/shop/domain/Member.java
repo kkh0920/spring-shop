@@ -1,8 +1,5 @@
 package com.practice.shop.domain;
 
-import com.practice.shop.exception.member.DisplayNameBlankException;
-import com.practice.shop.exception.member.IdBlankException;
-import com.practice.shop.exception.member.PasswordBlankException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

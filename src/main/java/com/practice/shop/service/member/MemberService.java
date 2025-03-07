@@ -1,7 +1,6 @@
 package com.practice.shop.service.member;
 
 import com.practice.shop.domain.Member;
-import com.practice.shop.dto.member.SignInRequestDto;
 import com.practice.shop.dto.member.SignUpRequestDto;
 import com.practice.shop.exception.member.DisplayNameBlankException;
 import com.practice.shop.exception.member.IdBlankException;
@@ -11,8 +10,6 @@ import com.practice.shop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
