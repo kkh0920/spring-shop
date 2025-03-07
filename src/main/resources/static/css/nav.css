@@ -3,7 +3,7 @@
     display: flex;
     padding: 10px;
     align-items: center;
-    font-family : 'Montserrat';
+    font-family: 'Montserrat', sans-serif;
 }
 .nav a {
     margin-right: 10px;
