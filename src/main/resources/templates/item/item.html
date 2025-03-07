@@ -6,11 +6,9 @@
     <title>Title</title>
     <link href="/css/main.css" rel="stylesheet">
     <link href="/css/nav.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
-
     <div th:replace="~{nav.html :: navbar}"></div>
 
     <div th:each="item : ${items}" class="card">
@@ -25,32 +23,28 @@
         </div>
     </div>
 
-</body>
-
-<script th:inline="javascript">
-    function confirmDelete(id) {
-        if(!confirm("정말 아이템을 삭제하시겠습니까?")) {
-            return;
-        }
-        axios.delete(`/item/delete/${id}`)
-            .then(() => {
-                alert("아이템이 삭제되었습니다.");
-            })
-            .catch((error) => {
-                alert("에러 코드 : " + error.response.status + "\n" +
-                      "에러 메시지 : " + error.response.data.message);
-            }).finally(() => {
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function confirmDelete(id) {
+            if(!confirm("정말 아이템을 삭제하시겠습니까?")) {
+                return;
+            }
+            axios.delete(`/item/delete/${id}`)
+                .catch((error) => {
+                    alert("에러 코드 : " + error.response.status + "\n" +
+                        "에러 메시지 : " + error.response.data.message);
+                }).finally(() => {
                 location.reload();
             });
-    }
-
-    function modify(itemId) {
-        let form = document.createElement("form");
-        form.method = "GET";
-        form.action = '/item/modify/' + itemId;
-        document.body.appendChild(form);
-        form.submit();
-    }
-</script>
+        }
+        function modify(itemId) {
+            let form = document.createElement("form");
+            form.method = "GET";
+            form.action = '/item/modify/' + itemId;
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+</body>
 
 </html>

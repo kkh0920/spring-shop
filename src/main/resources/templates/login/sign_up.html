@@ -5,7 +5,7 @@
     <title>Title</title>
     <link href="/css/main.css" rel="stylesheet">
     <link href="/css/nav.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 </head>
 <body>
 
@@ -18,26 +18,28 @@
         <button onclick="signUp()">가입</button>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function signUp() {
+            const displayName = document.getElementById('displayName').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            axios.post('/sign-up', {
+                displayName: displayName,
+                username: username,
+                password: password
+            }).then(() => {
+                location.href = '/login';
+            }).catch((error) => {
+                alert("에러 코드 : " + error.response.status + "\n" +
+                    "에러 메시지 : " + error.response.data);
+            });
+        }
+    </script>
 </body>
 
-<script>
-    function signUp() {
-        const displayName = document.getElementById('displayName').value;
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
 
-        axios.post('/sign-up', {
-            displayName: displayName,
-            username: username,
-            password: password
-        }).then(() => {
-            location.href = '/login';
-        }).catch((error) => {
-            alert("에러 코드 : " + error.response.status + "\n" +
-                  "에러 메시지 : " + error.response.data);
-        });
-    }
-</script>
 
 
 </html>

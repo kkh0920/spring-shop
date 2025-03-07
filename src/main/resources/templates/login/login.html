@@ -7,9 +7,8 @@
     <link href="/css/nav.css" rel="stylesheet">
 </head>
 <body>
-
     <div th:replace="~{nav.html :: navbar}"></div>
-    <!--로그인 폼-->
+
     <div>
         <form action="/login" method="post">
             <input name="username" type="text" placeholder="아이디">
@@ -25,6 +24,5 @@
     <div th:if="${param.error}">
         <h4>아이디 혹은 패스워드가 올바르지 않습니다.</h4>
     </div>
-
 </body>
 </html>

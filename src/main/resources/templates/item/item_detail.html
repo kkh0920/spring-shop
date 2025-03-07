@@ -7,7 +7,6 @@
     <link href="/css/nav.css" rel="stylesheet">
 </head>
 <body>
-
     <div th:replace="~{nav.html :: navbar}"></div>
 
     <div class="detail">
@@ -17,6 +16,5 @@
         <h4 th:text="${itemDetail.getTitle()}">금도금 바지</h4>
         <p th:text="${itemDetail.getPrice() + '원'}">7억</p>
     </div>
-
 </body>
 </html>
