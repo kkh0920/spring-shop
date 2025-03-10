@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @RestControllerAdvice
 public class MyExceptionHandler {
@@ -15,6 +16,11 @@ public class MyExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> argMismatch() {
         return ResponseEntity.status(500).body("잘못된 요청입니다.");
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<String> noResourceFound() {
+        return ResponseEntity.status(404).body("해당 페이지는 존재하지 않습니다.");
     }
 
     /* ---------------- item exception ---------------- */
