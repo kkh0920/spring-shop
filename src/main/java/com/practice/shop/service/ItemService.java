@@ -1,15 +1,17 @@
 package com.practice.shop.service;
 
 import com.practice.shop.domain.Item;
+import com.practice.shop.domain.Member;
 import com.practice.shop.dto.item.ItemAddRequestDto;
 import com.practice.shop.dto.item.ItemDetailRequestDto;
 import com.practice.shop.dto.item.ItemModifyRequestDto;
 import com.practice.shop.exception.item.ItemNotFoundException;
 import com.practice.shop.exception.item.ItemPriceInvalidException;
 import com.practice.shop.exception.item.ItemTitleBlankException;
+import com.practice.shop.exception.member.UserNotFoundException;
 import com.practice.shop.repository.ItemRepository;
+import com.practice.shop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.config.annotation.authentication.configuration.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,12 +22,18 @@ import java.util.Optional;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-    private final GlobalAuthenticationConfigurerAdapter enableGlobalAuthenticationAutowiredConfigurer;
+    private final MemberRepository memberRepository;
 
     public void addItem(ItemAddRequestDto itemAddRequestDto) {
+        Optional<Member> member = memberRepository.findByUsername(itemAddRequestDto.getUsername());
+        if(member.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+
         Item item = new Item();
         item.setTitle(itemAddRequestDto.getTitle());
         item.setPrice(itemAddRequestDto.getPrice());
+        item.setMember(member.get());
         itemValidation(item);
 
         itemRepository.save(item);
@@ -57,7 +65,7 @@ public class ItemService {
     }
 
     public List<Item> findAll() {
-        return itemRepository.findAll();
+        return itemRepository.findAllByOrderByInsertDateDesc();
     }
 
     private void itemValidation(Item item) {

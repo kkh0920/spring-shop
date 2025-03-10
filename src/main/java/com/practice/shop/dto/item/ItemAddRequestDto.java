@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 public class ItemAddRequestDto {
+    private String username;
     private String title;
     private Integer price;
 }

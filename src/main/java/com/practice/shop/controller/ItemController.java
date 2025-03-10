@@ -7,6 +7,8 @@ import com.practice.shop.dto.item.ItemModifyRequestDto;
 import com.practice.shop.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,11 +35,6 @@ public class ItemController {
         return "/item/item";
     }
 
-    @GetMapping("/item/write")
-    public String writePage() {
-        return "/item/item_write";
-    }
-
     @GetMapping("/item/detail/{id}")
     public String detailPage(@PathVariable Long id, Model model) {
         ItemDetailRequestDto itemDetailRequestDto = new ItemDetailRequestDto(id);
@@ -46,6 +43,13 @@ public class ItemController {
         return "/item/item_detail";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/item/write")
+    public String writePage() {
+        return "/item/item_write";
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/item/modify/{id}")
     public String modifyPage(@PathVariable Long id, Model model) {
         Item item = itemService.findOne(id);
@@ -55,18 +59,23 @@ public class ItemController {
 
     /* ------------------ DB에 직접적으로 수정을 가하는 부분 ------------------ */
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/item/add")
-    public ResponseEntity<Void> addItem(@RequestBody ItemAddRequestDto itemAddRequestDto) {
+    public ResponseEntity<Void> addItem(@RequestBody ItemAddRequestDto itemAddRequestDto,
+                                        Authentication auth) {
+        itemAddRequestDto.setUsername(auth.getName());
         itemService.addItem(itemAddRequestDto);
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/item/modify")
     public ResponseEntity<Void> modifyItem(@RequestBody ItemModifyRequestDto itemModifyRequestDto) {
         itemService.modifyItem(itemModifyRequestDto);
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/item/delete/{id}")
     public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
         itemService.deleteItem(id);
