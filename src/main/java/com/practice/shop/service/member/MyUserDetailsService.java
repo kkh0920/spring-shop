@@ -1,11 +1,11 @@
 package com.practice.shop.service.member;
 
 import com.practice.shop.domain.Member;
+import com.practice.shop.domain.MyUserDetails;
 import com.practice.shop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,8 +27,9 @@ public class MyUserDetailsService implements UserDetailsService {
         if(member.isEmpty()) {
             throw new UsernameNotFoundException("해당 아이디는 존재하지 않습니다.");
         }
+        Member entity = member.get();
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("일반 유저"));
-        return new User(username, member.get().getPassword(), authorities);
+        return new MyUserDetails(entity.getDisplayName(), entity.getUsername(), entity.getPassword(), authorities);
     }
 }
