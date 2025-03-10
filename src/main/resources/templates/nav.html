@@ -1,8 +1,14 @@
-<div class="nav" th:fragment="navbar" >
-    <a class="logo">SpringMall</a>
-    <a href="/item">List</a>
-    <a href="/item/write">Write</a>
-    <a sec:authorize="isAnonymous()" href="/login">Login</a>
-    <a sec:authorize="isAuthenticated()" href="/my-page">My Page</a>
-    <a sec:authorize="isAuthenticated()" href="/logout">Logout</a>
-</div>
+<header class="bg-white shadow-md" th:fragment="navbar">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Spring Mall</h1>
+        <nav>
+            <ul class="flex space-x-4">
+                <li><a href="/item" class="text-gray-700 hover:text-blue-500">List</a></li>
+                <li sec:authorize="isAuthenticated()"><a href="/item/write" class="text-gray-700 hover:text-blue-500">Write</a></li>
+                <li sec:authorize="isAnonymous()"><a href="/login" class="text-gray-700 hover:text-blue-500">LogIn</a></li>
+                <li sec:authorize="isAuthenticated()"><a href="/my-page" class="text-gray-700 hover:text-blue-500">MyPage</a></li>
+                <li sec:authorize="isAuthenticated()"><a href="/logout" class="text-gray-700 hover:text-blue-500">LogOut</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>

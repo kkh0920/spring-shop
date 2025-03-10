@@ -2,19 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="/css/main.css" rel="stylesheet">
-    <link href="/css/nav.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Mall</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-gray-100">
     <div th:replace="~{nav.html :: navbar}"></div>
 
-    <div class="detail">
-        <h4>상세페이지</h4>
-
-        <img src="https://placehold.co/300">
-        <h4 th:text="${itemDetail.getTitle()}">금도금 바지</h4>
-        <p th:text="${itemDetail.getPrice() + '원'}">7억</p>
-    </div>
+    <main class="container mx-auto px-4 py-8">
+        <div class="bg-gray-100 flex items-center justify-center min-h-screen">
+            <div class="bg-white shadow-lg rounded-lg w-96 p-6">
+                <main class="text-center">
+                    <div class="flex items-center justify-center p-4">
+                        <img src="https://placehold.co/300"
+                             class="bg-gray-300 rounded-md">
+                    </div>
+                    <div>
+                        <h4 th:text="${itemDetail.getTitle()}" class="text-xl font-semibold">Camera</h4>
+                        <p th:text="${itemDetail.getPrice() + '원'}" class="text-lg text-gray-700">10,000원</p>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
