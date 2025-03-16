@@ -3,12 +3,35 @@
         <h1 class="text-2xl font-bold">Spring Mall</h1>
         <nav>
             <ul class="flex space-x-4">
-                <li><a href="/item" class="text-gray-700 hover:text-blue-500">List</a></li>
+                <li><a href="/item/page/1" class="text-gray-700 hover:text-blue-500">List</a></li>
                 <li sec:authorize="isAuthenticated()"><a href="/item/write" class="text-gray-700 hover:text-blue-500">Write</a></li>
                 <li sec:authorize="isAnonymous()"><a href="/login" class="text-gray-700 hover:text-blue-500">LogIn</a></li>
                 <li sec:authorize="isAuthenticated()"><a href="/my-page" class="text-gray-700 hover:text-blue-500">MyPage</a></li>
-                <li sec:authorize="isAuthenticated()"><a href="/logout" class="text-gray-700 hover:text-blue-500">LogOut</a></li>
+                <li sec:authorize="isAuthenticated()"><a onclick="logout()" class="text-gray-700 hover:text-blue-500">LogOut</a></li>
             </ul>
         </nav>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script th:fragment="navbar-script">
+        async function getCsrfToken() {
+            const response = await axios.get('/api/csrf-token');
+            return response.data.token;
+        }
+        async function logout() {
+            const csrfToken = await getCsrfToken();
+            axios.post('/logout', {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-XSRF-TOKEN': csrfToken
+                }
+            }).then(() => {
+                window.location.href = '/';
+            }).catch(error => {
+                alert("에러 코드 : " + error.response.status + "\n" +
+                    "에러 메시지 : " + error.response.data);
+            })
+        }
+    </script>
 </header>
+
