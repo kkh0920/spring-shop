@@ -3,8 +3,10 @@ package com.practice.shop.exception;
 import com.practice.shop.exception.item.ItemNotFoundException;
 import com.practice.shop.exception.item.ItemPriceInvalidException;
 import com.practice.shop.exception.item.ItemTitleBlankException;
+import com.practice.shop.exception.item.PageNotFoundException;
 import com.practice.shop.exception.member.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -16,6 +18,11 @@ public class MyExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> argMismatch() {
         return ResponseEntity.status(500).body("잘못된 요청입니다.");
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<String> authorizationDenied() {
+        return ResponseEntity.status(403).body("권한이 없습니다.");
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
@@ -38,6 +45,11 @@ public class MyExceptionHandler {
     @ExceptionHandler(ItemPriceInvalidException.class)
     public ResponseEntity<String> invalidPrice(ItemPriceInvalidException e) {
         return ResponseEntity.status(400).body(e.getMessage());
+    }
+
+    @ExceptionHandler(PageNotFoundException.class)
+    public ResponseEntity<String> pageNotFound(PageNotFoundException e) {
+        return ResponseEntity.status(404).body(e.getMessage());
     }
 
     /* ---------------- member exception ---------------- */
