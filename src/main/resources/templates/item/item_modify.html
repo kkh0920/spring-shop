@@ -4,13 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spring Mall</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
-    </style>
+    <link href="/output.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
     <div th:replace="~{nav.html :: navbar}"></div>
@@ -18,8 +12,10 @@
     <main class="container mx-auto px-4 py-8">
         <div class="grid grid-cols-1 gap-6">
             <div class="p-4">
-              <input id="title" type="text" placeholder="아이템 이름" th:value="${item.getTitle()}">
-              <input id="price" type="number" placeholder="가격" th:value="${item.getPrice()}">
+              <input id="title" type="text" placeholder="아이템 이름" th:value="${item.getTitle()}"
+                     class="px-3 py-2 border border-white-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <input id="price" type="number" placeholder="가격" th:value="${item.getPrice()}"
+                     class="px-3 py-2 border border-white-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
               <button th:onclick="|modify(${item.getId()})|"
                       class="px-4 py-1 bg-white border border-gray-300 rounded shadow hover:bg-gray-100">
                   수정 완료</button>
@@ -29,9 +25,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        function modify(id) {
+        async function getCsrfToken() {
+            const response = await axios.get('/api/csrf-token');
+            return response.data.token;
+        }
+        async function modify(id) {
             const title = document.getElementById('title').value;
             const price = document.getElementById('price').value;
+            const csrfToken = await getCsrfToken();
             axios.put('/item/modify', {
                 id: id,
                 title: title,
@@ -39,7 +40,10 @@
             }, {
                 // put 요청 시, 일부 브라우저에서는 application/x-www-form-urlencoded로 요청을 보내기 때문에,
                 // RequestBody에 JSON 형태로 데이터를 보내기 위해 'application/json'로 설정해준다.
-                headers: { 'Content-Type': 'application/json' }
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-XSRF-TOKEN': csrfToken
+                }
             }).then(() => {
                 location.href = '/my-page';
             }).catch((error) => {
