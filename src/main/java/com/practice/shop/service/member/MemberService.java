@@ -2,16 +2,23 @@ package com.practice.shop.service.member;
 
 import com.practice.shop.domain.Item;
 import com.practice.shop.domain.Member;
+import com.practice.shop.dto.item.ItemResponseDto;
 import com.practice.shop.dto.member.SignUpRequestDto;
+import com.practice.shop.exception.item.PageNotFoundException;
 import com.practice.shop.exception.member.*;
 import com.practice.shop.repository.ItemRepository;
 import com.practice.shop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,12 +40,20 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public List<Item> myPage(String username) {
+    public Page<ItemResponseDto> myPage(Integer page, Integer pageSize, String username) {
+        if(page < 0) {
+            throw new PageNotFoundException();
+        }
         Optional<Member> member = memberRepository.findByUsername(username);
         if(member.isEmpty()) {
             throw new UserNotFoundException();
         }
-        return itemRepository.findAllByMemberOrderByInsertDateDesc(member.get());
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("insertDate").descending());
+        Page<ItemResponseDto> dto = itemRepository.findAllByMember(member.get(), pageable).map(ItemResponseDto::from);
+        if (dto.getTotalPages() < page) {
+            throw new PageNotFoundException();
+        }
+        return dto;
     }
 
     private void validation(Member member) {

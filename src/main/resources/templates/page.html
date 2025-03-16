@@ -1,0 +1,16 @@
+<div class="flex justify-center mt-4" th:fragment="pagebar">
+  <button th:if="${pager.getMinIndex() > pager.getIndexSize()}"
+          th:onclick="|getItems(${pager.getMinIndex() - 1})|"
+          class="bg-white shadow-md px-3 py-1 rounded-md ml-4">←</button>
+
+  <th:block th:each="num : ${#numbers.sequence(pager.getMinIndex(), pager.getMaxIndex())}">
+    <th:button th:onclick="|getItems(${num})|" th:text="${num}"
+               th:classappend="${num == pager.getCurrentPage()} ?
+                        'bg-blue-500 shadow-md px-3 py-1 rounded-md ml-4 text-white' :
+                        'bg-white shadow-md px-3 py-1 rounded-md ml-4'"></th:button>
+  </th:block>
+
+  <button th:if="${pager.getMaxIndex() < pager.getTotalPage()}"
+          th:onclick="|getItems(${pager.getMaxIndex() + 1})|"
+          class="bg-white shadow-md px-3 py-1 rounded-md ml-4">→</button>
+</div>
