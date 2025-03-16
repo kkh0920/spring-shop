@@ -1,4 +1,4 @@
-package com.practice.shop.domain;
+package com.practice.shop.dto;
 
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

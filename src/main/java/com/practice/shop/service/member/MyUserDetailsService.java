@@ -1,7 +1,7 @@
 package com.practice.shop.service.member;
 
 import com.practice.shop.domain.Member;
-import com.practice.shop.domain.MyUserDetails;
+import com.practice.shop.dto.MyUserDetails;
 import com.practice.shop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
